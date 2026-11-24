@@ -1,0 +1,5 @@
+# 供后端（成员 7）与数据库测试脚本（成员 11）连接 MySQL 8.0 使用
+# 注意：PyMySQL 连接 MySQL 8.0 默认的 caching_sha2_password 认证方式必须安装 cryptography
+sqlalchemy>=2.0.0
+pymysql>=1.1.0
+cryptography>=42.0.0
