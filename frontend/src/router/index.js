@@ -3,105 +3,113 @@ import { ElMessage } from 'element-plus'
 import { useAuthStore } from '@/stores/auth'
 
 export const routes = [
-  // 公共与认证（成员 3）
+  // 独立认证页（不套外框）
   {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/auth/LoginView.vue'),
     meta: { title: '登录 / 注册', guestOnly: true },
   },
+
+  // 前台通用布局（MainLayout）
   {
     path: '/',
-    name: 'Home',
-    component: () => import('@/views/home/HomeView.vue'),
-    meta: { title: '首页' },
+    component: () => import('@/layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Home',
+        component: () => import('@/views/home/HomeView.vue'),
+        meta: { title: '首页' },
+      },
+
+      // 二手交易（成员 4）—— /create 必须定义在 /:id 之前
+      {
+        path: 'products',
+        name: 'ProductList',
+        component: () => import('@/views/products/ProductListView.vue'),
+        meta: { title: '商品大厅' },
+      },
+      {
+        path: 'products/create',
+        name: 'ProductCreate',
+        component: () => import('@/views/products/ProductCreateView.vue'),
+        meta: { title: '发布商品', requiresAuth: true },
+      },
+      {
+        path: 'products/:id',
+        name: 'ProductDetail',
+        component: () => import('@/views/products/ProductDetailView.vue'),
+        meta: { title: '商品详情' },
+      },
+
+      // 失物招领（成员 5）—— /create 必须定义在 /:id 之前
+      {
+        path: 'lost-found',
+        name: 'LostFoundList',
+        component: () => import('@/views/lost-found/LostFoundListView.vue'),
+        meta: { title: '信息大厅' },
+      },
+      {
+        path: 'lost-found/create',
+        name: 'LostFoundCreate',
+        component: () => import('@/views/lost-found/LostFoundCreateView.vue'),
+        meta: { title: '发布失物 / 寻物', requiresAuth: true },
+      },
+      {
+        path: 'lost-found/:id',
+        name: 'LostFoundDetail',
+        component: () => import('@/views/lost-found/LostFoundDetailView.vue'),
+        meta: { title: '信息详情' },
+      },
+
+      // 跑腿服务（成员 6）—— /create 必须定义在 /:id 之前
+      {
+        path: 'errands',
+        name: 'ErrandList',
+        component: () => import('@/views/errands/ErrandListView.vue'),
+        meta: { title: '任务大厅' },
+      },
+      {
+        path: 'errands/create',
+        name: 'ErrandCreate',
+        component: () => import('@/views/errands/ErrandCreateView.vue'),
+        meta: { title: '发布跑腿', requiresAuth: true },
+      },
+      {
+        path: 'errands/:id',
+        name: 'ErrandDetail',
+        component: () => import('@/views/errands/ErrandDetailView.vue'),
+        meta: { title: '任务详情' },
+      },
+
+      // 个人中心（成员 6，均需登录）
+      {
+        path: 'profile',
+        name: 'Profile',
+        component: () => import('@/views/profile/ProfileView.vue'),
+        meta: { title: '个人中心', requiresAuth: true },
+      },
+      {
+        path: 'profile/posts',
+        name: 'ProfilePosts',
+        component: () => import('@/views/profile/MyPostsView.vue'),
+        meta: { title: '我的发布', requiresAuth: true },
+      },
+      {
+        path: 'profile/errands',
+        name: 'ProfileErrands',
+        component: () => import('@/views/profile/MyErrandsView.vue'),
+        meta: { title: '我的接单任务', requiresAuth: true },
+      },
+    ],
   },
 
-  // 二手交易（成员 4）—— /create 必须定义在 /:id 之前
-  {
-    path: '/products',
-    name: 'ProductList',
-    component: () => import('@/views/products/ProductListView.vue'),
-    meta: { title: '商品大厅' },
-  },
-  {
-    path: '/products/create',
-    name: 'ProductCreate',
-    component: () => import('@/views/products/ProductCreateView.vue'),
-    meta: { title: '发布商品', requiresAuth: true },
-  },
-  {
-    path: '/products/:id',
-    name: 'ProductDetail',
-    component: () => import('@/views/products/ProductDetailView.vue'),
-    meta: { title: '商品详情' },
-  },
-
-  // 失物招领（成员 5）—— /create 必须定义在 /:id 之前
-  {
-    path: '/lost-found',
-    name: 'LostFoundList',
-    component: () => import('@/views/lost-found/LostFoundListView.vue'),
-    meta: { title: '信息大厅' },
-  },
-  {
-    path: '/lost-found/create',
-    name: 'LostFoundCreate',
-    component: () => import('@/views/lost-found/LostFoundCreateView.vue'),
-    meta: { title: '发布失物 / 寻物', requiresAuth: true },
-  },
-  {
-    path: '/lost-found/:id',
-    name: 'LostFoundDetail',
-    component: () => import('@/views/lost-found/LostFoundDetailView.vue'),
-    meta: { title: '信息详情' },
-  },
-
-  // 跑腿服务（成员 6）—— /create 必须定义在 /:id 之前
-  {
-    path: '/errands',
-    name: 'ErrandList',
-    component: () => import('@/views/errands/ErrandListView.vue'),
-    meta: { title: '任务大厅' },
-  },
-  {
-    path: '/errands/create',
-    name: 'ErrandCreate',
-    component: () => import('@/views/errands/ErrandCreateView.vue'),
-    meta: { title: '发布跑腿', requiresAuth: true },
-  },
-  {
-    path: '/errands/:id',
-    name: 'ErrandDetail',
-    component: () => import('@/views/errands/ErrandDetailView.vue'),
-    meta: { title: '任务详情' },
-  },
-
-  // 个人中心（成员 6，均需登录）
-  {
-    path: '/profile',
-    name: 'Profile',
-    component: () => import('@/views/profile/ProfileView.vue'),
-    meta: { title: '个人中心', requiresAuth: true },
-  },
-  {
-    path: '/profile/posts',
-    name: 'ProfilePosts',
-    component: () => import('@/views/profile/MyPostsView.vue'),
-    meta: { title: '我的发布', requiresAuth: true },
-  },
-  {
-    path: '/profile/errands',
-    name: 'ProfileErrands',
-    component: () => import('@/views/profile/MyErrandsView.vue'),
-    meta: { title: '我的接单任务', requiresAuth: true },
-  },
-
-  // 后台管理（成员 6，均需管理员权限）
+  // 后台管理布局（AdminLayout，成员 6，均需管理员权限）
   {
     path: '/admin',
     name: 'Admin',
-    component: () => import('@/views/admin/AdminView.vue'),
+    component: () => import('@/layouts/AdminLayout.vue'),
     redirect: '/admin/users',
     meta: { title: '后台管理', requiresAuth: true, requiresAdmin: true },
     children: [
@@ -132,7 +140,7 @@ export const routes = [
     ],
   },
 
-  // 404 兜底路由
+  // 404 独立兜底页（不套外框）
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',

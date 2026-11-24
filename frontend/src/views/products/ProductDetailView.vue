@@ -5,32 +5,24 @@ const route = useRoute()
 </script>
 
 <template>
-  <main class="placeholder-page">
-    <div class="ct-container">
-      <section class="placeholder-card">
-        <el-tag type="success" effect="light">二手交易 · 成员 4</el-tag>
-        <h1 class="placeholder-title">商品详情</h1>
-        <p class="placeholder-meta">当前路径：<code>{{ route.fullPath }}</code></p>
-        <p class="placeholder-meta">商品 ID：<code>{{ route.params.id }}</code></p>
-        <div class="placeholder-links">
-          <router-link to="/products"><el-button>返回商品大厅</el-button></router-link>
-          <router-link to="/products/create"><el-button type="primary" plain>发布商品</el-button></router-link>
-          <router-link to="/"><el-button plain>返回首页</el-button></router-link>
-        </div>
-      </section>
+  <section class="placeholder-card">
+    <el-tag type="success" effect="light">二手交易 · 成员 4</el-tag>
+    <h1 class="placeholder-title">商品详情</h1>
+    <p class="placeholder-meta">当前路径：<code>{{ route.fullPath }}</code></p>
+    <p class="placeholder-meta">商品 ID：<code>{{ route.params.id }}</code></p>
+    <div class="placeholder-links">
+      <router-link to="/products"><el-button>返回商品大厅</el-button></router-link>
+      <router-link to="/products/create"><el-button type="primary" plain>发布商品</el-button></router-link>
+      <router-link to="/"><el-button plain>返回首页</el-button></router-link>
     </div>
-  </main>
+  </section>
 </template>
 
 <style scoped>
-.placeholder-page {
-  min-height: 100vh;
-  padding: 48px 0;
-}
 .placeholder-card {
-  max-width: 720px;
+  max-width: 760px;
   margin: 0 auto;
-  padding: 32px;
+  padding: 28px;
   background: var(--ct-bg-surface);
   border: 1px solid var(--ct-border-color);
   border-radius: var(--ct-radius-lg);
