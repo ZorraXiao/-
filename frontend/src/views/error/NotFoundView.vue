@@ -1,50 +1,65 @@
 <script setup>
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
+const router = useRouter()
 </script>
 
 <template>
-  <main class="placeholder-page">
-    <div class="ct-container">
-      <section class="placeholder-card">
-        <el-tag type="info" effect="light">404 Not Found</el-tag>
-        <h1 class="placeholder-title">页面不存在</h1>
-        <p class="placeholder-meta">未能匹配路径：<code>{{ route.fullPath }}</code></p>
-        <div class="placeholder-links">
-          <router-link to="/"><el-button type="primary">返回首页</el-button></router-link>
-        </div>
-      </section>
+  <main class="not-found">
+    <p class="ct-mono not-found__code">404</p>
+    <h1 class="not-found__title">页面不存在</h1>
+    <p class="not-found__desc">
+      你访问的地址 <code>{{ route.fullPath }}</code> 不存在或已被移除。
+    </p>
+    <div class="not-found__actions">
+      <router-link to="/">
+        <el-button type="primary">返回首页</el-button>
+      </router-link>
+      <el-button @click="router.back()">返回上一页</el-button>
     </div>
   </main>
 </template>
 
 <style scoped>
-.placeholder-page {
+.not-found {
   min-height: 100vh;
-  padding: 48px 0;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: var(--ct-bg-canvas);
 }
-.placeholder-card {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 32px;
-  background: var(--ct-bg-surface);
-  border: 1px solid var(--ct-border-color);
-  border-radius: var(--ct-radius-lg);
-  box-shadow: var(--ct-shadow-sm);
+
+.not-found__code {
+  font-size: 64px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: var(--ct-tracking-tight);
+  color: var(--ct-border-strong);
 }
-.placeholder-title {
-  margin: 14px 0 8px;
+
+.not-found__title {
+  margin-top: 16px;
   font-size: var(--ct-font-size-2xl);
+  font-weight: 600;
+  color: var(--ct-text-primary);
 }
-.placeholder-meta {
-  margin: 6px 0;
-  color: var(--ct-text-regular);
+
+.not-found__desc {
+  margin-top: 8px;
+  max-width: 480px;
+  font-size: var(--ct-font-size-base);
+  color: var(--ct-text-secondary);
 }
-.placeholder-links {
+
+.not-found__actions {
+  margin-top: 24px;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
-  margin-top: 20px;
 }
 </style>

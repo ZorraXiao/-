@@ -1,72 +1,163 @@
-/* 校园交易平台默认主题变量（清爽校园蓝 / 浅灰主题），后续换肤统一修改本文件 */
+/* 校园交易平台 · 极简高信噪比设计令牌（Zinc 中性色 + 低饱和深靛蓝强调色） */
 :root {
-  /* 品牌主色调 */
-  --ct-color-primary: #2563eb;
-  --ct-color-primary-hover: #3b82f6;
-  --ct-color-primary-active: #1d4ed8;
-  --ct-color-primary-light: #dbeafe;
-  --ct-color-primary-lighter: #eff6ff;
+  /* 画布与表面色 */
+  --ct-bg-canvas: #FAFAFA;
+  --ct-bg-surface: #FFFFFF;
+  --ct-bg-subtle: #F4F4F5;
 
-  /* 语义状态色 */
-  --ct-color-success: #16a34a;
-  --ct-color-warning: #d97706;
-  --ct-color-danger: #dc2626;
-  --ct-color-info: #64748b;
+  /* 文字色阶 */
+  --ct-text-primary: #09090B;
+  --ct-text-body: #27272A;
+  --ct-text-secondary: #52525B;
+  --ct-text-tertiary: #71717A;
+  --ct-text-placeholder: #A1A1AA;
 
-  /* 中性背景与文字色 */
-  --ct-bg-page: #f5f7fa;
-  --ct-bg-surface: #ffffff;
-  --ct-bg-subtle: #f8fafc;
-  --ct-text-primary: #1e293b;
-  --ct-text-regular: #475569;
-  --ct-text-secondary: #64748b;
-  --ct-text-placeholder: #94a3b8;
-  --ct-border-color: #e2e8f0;
-  --ct-border-color-light: #f1f5f9;
+  /* 1px 极细边框色阶 */
+  --ct-border: #E4E4E7;
+  --ct-border-strong: #D4D4D8;
+  --ct-border-dashed: #D4D4D8;
+
+  /* 唯一强调色：低饱和度深靛蓝 */
+  --ct-accent: #2E4F8F;
+  --ct-accent-hover: #233E73;
+  --ct-accent-active: #1C3260;
+  --ct-accent-soft: #EEF2FA;
+
+  /* 低饱和度语义色（仅用于状态圆点与系统提示） */
+  --ct-success: #2F7D4F;
+  --ct-warning: #B26B00;
+  --ct-danger: #C0362C;
+  --ct-info: #71717A;
+  --ct-violet: #7C6BB0;
 
   /* 字体与字号 */
-  --ct-font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --ct-font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --ct-font-mono: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, Consolas, monospace;
   --ct-font-size-xs: 12px;
   --ct-font-size-sm: 13px;
   --ct-font-size-base: 14px;
+  --ct-font-size-md: 15px;
   --ct-font-size-lg: 16px;
   --ct-font-size-xl: 20px;
   --ct-font-size-2xl: 24px;
+  --ct-font-size-3xl: 30px;
+  --ct-font-size-display: clamp(34px, 5vw, 52px);
   --ct-line-height-base: 1.6;
+  --ct-tracking-tight: -0.025em;
 
   /* 圆角规范 */
   --ct-radius-sm: 6px;
-  --ct-radius-md: 10px;
-  --ct-radius-lg: 14px;
+  --ct-radius-md: 8px;
+  --ct-radius-lg: 12px;
   --ct-radius-round: 9999px;
 
-  /* 布局尺寸与阴影 */
-  --ct-page-max-width: 1200px;
+  /* 布局尺寸、微交互与极轻浮层阴影 */
+  --ct-page-max-width: 1120px;
   --ct-page-padding-x: 24px;
-  --ct-header-height: 64px;
-  --ct-shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
-  --ct-shadow-md: 0 6px 20px rgba(15, 23, 42, 0.08);
+  --ct-header-height: 56px;
+  --ct-transition: all 200ms ease;
+  --ct-shadow-sm: 0 1px 2px rgba(9, 9, 11, 0.04);
+  --ct-shadow-md: 0 4px 12px rgba(9, 9, 11, 0.05);
 
-  /* Element Plus 变量桥接（实现组件库同步换肤） */
-  --el-color-primary: var(--ct-color-primary);
-  --el-color-primary-light-3: #60a5fa;
-  --el-color-primary-light-5: #93c5fd;
-  --el-color-primary-light-7: #bfdbfe;
-  --el-color-primary-light-8: var(--ct-color-primary-light);
-  --el-color-primary-light-9: var(--ct-color-primary-lighter);
-  --el-color-primary-dark-2: var(--ct-color-primary-active);
-  --el-color-success: var(--ct-color-success);
-  --el-color-warning: var(--ct-color-warning);
-  --el-color-danger: var(--ct-color-danger);
-  --el-color-info: var(--ct-color-info);
+  /* 向后兼容旧令牌别名（避免第三方或业务模块引用失效） */
+  --ct-color-primary: var(--ct-accent);
+  --ct-color-primary-hover: var(--ct-accent-hover);
+  --ct-color-primary-active: var(--ct-accent-active);
+  --ct-color-primary-light: #D5DCE9;
+  --ct-color-primary-lighter: var(--ct-accent-soft);
+  --ct-color-success: var(--ct-success);
+  --ct-color-warning: var(--ct-warning);
+  --ct-color-danger: var(--ct-danger);
+  --ct-color-info: var(--ct-info);
+  --ct-bg-page: var(--ct-bg-canvas);
+  --ct-text-regular: var(--ct-text-secondary);
+  --ct-border-color: var(--ct-border);
+  --ct-border-color-light: var(--ct-bg-subtle);
+  --ct-font-family: var(--ct-font-sans);
+
+  /* Element Plus 核心变量覆写（消除默认高饱和蓝与厚重阴影） */
+  --el-color-primary: var(--ct-accent);
+  --el-color-primary-light-3: #6D84B1;
+  --el-color-primary-light-5: #97A7C7;
+  --el-color-primary-light-7: #C0CADD;
+  --el-color-primary-light-8: #D5DCE9;
+  --el-color-primary-light-9: #EEF2FA;
+  --el-color-primary-dark-2: var(--ct-accent-hover);
+
+  --el-color-success: var(--ct-success);
+  --el-color-success-light-3: #6DA484;
+  --el-color-success-light-5: #97BEA7;
+  --el-color-success-light-7: #C1D8CA;
+  --el-color-success-light-8: #D5E5DC;
+  --el-color-success-light-9: #EAF2ED;
+  --el-color-success-dark-2: #26643F;
+
+  --el-color-warning: var(--ct-warning);
+  --el-color-warning-light-3: #C9974D;
+  --el-color-warning-light-5: #D9B580;
+  --el-color-warning-light-7: #E8D3B3;
+  --el-color-warning-light-8: #F0E1CC;
+  --el-color-warning-light-9: #F7F0E6;
+  --el-color-warning-dark-2: #8E5600;
+
+  --el-color-danger: var(--ct-danger);
+  --el-color-danger-light-3: #D3726B;
+  --el-color-danger-light-5: #DF9B95;
+  --el-color-danger-light-7: #ECC3C0;
+  --el-color-danger-light-8: #F2D7D5;
+  --el-color-danger-light-9: #F9EBEA;
+  --el-color-danger-dark-2: #9A2B23;
+
+  --el-color-error: var(--ct-danger);
+  --el-color-error-light-3: #D3726B;
+  --el-color-error-light-5: #DF9B95;
+  --el-color-error-light-7: #ECC3C0;
+  --el-color-error-light-8: #F2D7D5;
+  --el-color-error-light-9: #F9EBEA;
+  --el-color-error-dark-2: #9A2B23;
+
+  --el-color-info: var(--ct-info);
+  --el-color-info-light-3: #9C9CA2;
+  --el-color-info-light-5: #B8B8BC;
+  --el-color-info-light-7: #D4D4D7;
+  --el-color-info-light-8: #E3E3E4;
+  --el-color-info-light-9: #F1F1F2;
+  --el-color-info-dark-2: #5A5A62;
+
+  --el-text-color-primary: var(--ct-text-primary);
+  --el-text-color-regular: var(--ct-text-body);
+  --el-text-color-secondary: var(--ct-text-tertiary);
+  --el-text-color-placeholder: var(--ct-text-placeholder);
+  --el-text-color-disabled: var(--ct-text-placeholder);
+
+  --el-border-color: var(--ct-border);
+  --el-border-color-light: var(--ct-border);
+  --el-border-color-lighter: var(--ct-bg-subtle);
+  --el-border-color-extra-light: var(--ct-bg-canvas);
+  --el-border-color-dark: var(--ct-border-strong);
+  --el-border-color-darker: var(--ct-text-placeholder);
+  --el-border-color-hover: var(--ct-border-strong);
+
+  --el-fill-color: var(--ct-bg-subtle);
+  --el-fill-color-light: var(--ct-bg-canvas);
+  --el-fill-color-lighter: var(--ct-bg-canvas);
+  --el-fill-color-extra-light: var(--ct-bg-canvas);
+  --el-fill-color-dark: var(--ct-border);
+  --el-fill-color-blank: var(--ct-bg-surface);
+
+  --el-bg-color: var(--ct-bg-surface);
+  --el-bg-color-page: var(--ct-bg-canvas);
+  --el-bg-color-overlay: var(--ct-bg-surface);
+
   --el-border-radius-base: var(--ct-radius-sm);
   --el-border-radius-small: 4px;
-  --el-font-family: var(--ct-font-family);
-  --el-text-color-primary: var(--ct-text-primary);
-  --el-text-color-regular: var(--ct-text-regular);
-  --el-text-color-secondary: var(--ct-text-secondary);
-  --el-text-color-placeholder: var(--ct-text-placeholder);
-  --el-border-color: var(--ct-border-color);
-  --el-border-color-light: var(--ct-border-color-light);
-  --el-bg-color-page: var(--ct-bg-page);
+  --el-border-radius-round: 20px;
+  --el-font-family: var(--ct-font-sans);
+  --el-transition-duration: 200ms;
+  --el-transition-duration-fast: 200ms;
+
+  --el-box-shadow: 0 1px 2px rgba(9, 9, 11, 0.04), 0 4px 12px rgba(9, 9, 11, 0.05);
+  --el-box-shadow-light: 0 1px 2px rgba(9, 9, 11, 0.04), 0 4px 12px rgba(9, 9, 11, 0.05);
+  --el-box-shadow-lighter: 0 1px 2px rgba(9, 9, 11, 0.04), 0 4px 12px rgba(9, 9, 11, 0.05);
+  --el-box-shadow-dark: 0 1px 2px rgba(9, 9, 11, 0.04), 0 4px 12px rgba(9, 9, 11, 0.05);
 }

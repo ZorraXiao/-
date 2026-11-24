@@ -51,16 +51,17 @@ frontend/src/
 ├── main.js                   # 入口：挂载 Pinia、Router、Element Plus（zh-cn）与全量图标，接入 401 跳转钩子
 ├── App.vue                   # 根路由出口 <router-view />
 ├── styles/
-│   ├── variables.css         # 全局 CSS 变量（校园蓝/浅灰默认主题、圆角、最大宽度 1200px，可一键换肤）
-│   └── global.css            # 全局基础样式与 .ct-container 版心容器
+│   ├── variables.css         # 全局 CSS 变量（Zinc 中性色 + 深靛蓝强调色，覆写 Element Plus 变量）
+│   └── global.css            # 全局基础样式、.ct-container 版心与骨架工具类
 ├── layouts/
-│   ├── MainLayout.vue        # 前台通用布局（顶部导航栏、登录态/管理员入口、居中主区）
-│   └── AdminLayout.vue       # 后台管理布局（左侧菜单栏、顶部标题栏与退出入口）
+│   ├── MainLayout.vue        # 前台通用布局（吸顶微磨砂顶栏、用户下拉菜单、单行页脚）
+│   └── AdminLayout.vue       # 后台管理布局（左侧极简工作台菜单、面包屑顶栏与退出入口）
 ├── components/               # 全站公共组件（成员 3 维护）
 │   ├── AppPagination.vue     # 统一分页器
 │   ├── SearchBar.vue         # 大厅搜索与操作条
 │   ├── StatusTag.vue         # 业务/治理状态标签
-│   └── EmptyState.vue        # 统一空状态
+│   ├── EmptyState.vue        # 统一空状态
+│   └── PageHeader.vue        # 统一极简页面头部（支持 eyebrow 或返回链接）
 ├── router/index.js           # 全站路由表与权限守卫（requiresAuth / requiresAdmin / guestOnly）
 ├── stores/auth.js            # 用户认证与资料 Pinia Store（含 localStorage 持久化）
 ├── utils/
@@ -168,3 +169,41 @@ const fetchList = () => { /* 请求后端列表 */ }
   <AppPagination v-model:page="page" v-model:page-size="pageSize" :total="100" @change="fetchList" />
 </template>
 ```
+
+---
+
+## 5. 视觉规范（阶段 2 改版）
+
+- **设计令牌（`styles/variables.css`）**：以 Zinc 中性色（画布 `#FAFAFA`、表面 `#FFFFFF`、弱背景 `#F4F4F5`、主文字 `#09090B`、次级 `#52525B`、辅助 `#71717A`、细边框 `#E4E4E7`）为基础，仅使用低饱和度深靛蓝 `#2E4F8F`（hover `#233E73`，浅底 `#EEF2FA`）作为核心强调色。新增组件与页面请优先引用 `--ct-*` 变量，避免硬编码颜色、渐变或重阴影。
+- **图标规范**：全站统一使用 `lucide-vue-next`，严禁使用 Emoji 作为界面图标，图标统一设置细线宽 `:stroke-width="1.5"`：
+  ```vue
+  <script setup>
+  import { Plus } from 'lucide-vue-next'
+  </script>
+
+  <template>
+    <el-button type="primary">
+      <Plus :size="15" :stroke-width="1.5" />
+      <span>发布商品</span>
+    </el-button>
+  </template>
+  ```
+- **通用骨架与排版工具类（`styles/global.css`）**：
+  - `.ct-page`：页面纵向容器（块间距 `24px`）。
+  - `.ct-panel` / `.ct-panel__header` / `.ct-panel__body` / `.ct-panel__footer`：白底 `1px` 细边框模块化面板；待接入骨架或草稿区可叠加 `.ct-panel--dashed`。
+  - `.ct-kv` / `.ct-kv__row` / `.ct-kv__label` / `.ct-kv__value` / `.ct-kv__hint`：键值对信息列表。
+  - `.ct-num` / `.ct-mono`：开启等宽数字（`tabular-nums`），用于金额、时间、编号与计数。
+  - `.ct-link`：带方向箭头的文字链接。
+- **`PageHeader` 页面头部组件**：
+  ```vue
+  <PageHeader
+    eyebrow="二手交易"
+    title="商品大厅"
+    description="浏览同校师生发布的闲置物品，按分类与关键词快速筛选。"
+  >
+    <template #actions>
+      <el-button type="primary">发布商品</el-button>
+    </template>
+  </PageHeader>
+  ```
+  详情或发布页可传入 `:back="{ to: '/products', label: '商品大厅' }"` 替代 `eyebrow`。

@@ -12,17 +12,30 @@ body {
 }
 
 body {
-  font-family: var(--ct-font-family);
+  font-family: var(--ct-font-sans);
   font-size: var(--ct-font-size-base);
   line-height: var(--ct-line-height-base);
   color: var(--ct-text-primary);
-  background-color: var(--ct-bg-page);
+  background-color: var(--ct-bg-canvas);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "cv11", "ss01";
 }
 
 #app {
   min-height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  color: var(--ct-text-primary);
+  letter-spacing: var(--ct-tracking-tight);
+}
+
+p {
+  margin: 0;
 }
 
 a {
@@ -35,10 +48,235 @@ img {
   max-width: 100%;
 }
 
+code {
+  font-family: var(--ct-font-mono);
+  font-size: var(--ct-font-size-xs);
+  font-variant-numeric: tabular-nums;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: var(--ct-bg-subtle);
+  color: var(--ct-text-body);
+}
+
+::selection {
+  background-color: var(--ct-accent-soft);
+  color: var(--ct-text-primary);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--ct-accent);
+  outline-offset: 2px;
+}
+
+/* Lucide 细线图标兜底规范 */
+svg.lucide {
+  stroke-width: 1.5;
+  flex-shrink: 0;
+}
+
+/* 等宽数字与单宽字体工具类 */
+.ct-num {
+  font-variant-numeric: tabular-nums;
+}
+
+.ct-mono {
+  font-family: var(--ct-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
 /* 通用页面版心容器 */
 .ct-container {
   width: 100%;
   max-width: var(--ct-page-max-width);
   margin: 0 auto;
   padding: 0 var(--ct-page-padding-x);
+}
+
+/* 页面纵向节奏 */
+.ct-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* 极简 1px 细边框面板（无重阴影） */
+.ct-panel {
+  background-color: var(--ct-bg-surface);
+  border: 1px solid var(--ct-border);
+  border-radius: var(--ct-radius-lg);
+  transition: var(--ct-transition);
+}
+
+.ct-panel:hover {
+  border-color: var(--ct-border-strong);
+}
+
+.ct-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--ct-border);
+}
+
+.ct-panel__title {
+  font-size: var(--ct-font-size-base);
+  font-weight: 600;
+  color: var(--ct-text-primary);
+}
+
+.ct-panel__body {
+  padding: 20px;
+}
+
+.ct-panel__footer {
+  padding: 12px 20px;
+  border-top: 1px solid var(--ct-border);
+}
+
+/* 待接入模块化虚线容器 */
+.ct-panel--dashed {
+  background-color: var(--ct-bg-canvas);
+  border: 1px dashed var(--ct-border-dashed);
+}
+
+.ct-panel--dashed:hover {
+  border-color: var(--ct-text-placeholder);
+}
+
+/* 键值对结构行 */
+.ct-kv {
+  display: flex;
+  flex-direction: column;
+}
+
+.ct-kv__row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--ct-border);
+  font-size: var(--ct-font-size-base);
+}
+
+.ct-kv__row:last-child {
+  border-bottom: none;
+}
+
+.ct-kv__label {
+  color: var(--ct-text-tertiary);
+}
+
+.ct-kv__value {
+  color: var(--ct-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.ct-kv__hint {
+  color: var(--ct-text-secondary);
+}
+
+@media (max-width: 640px) {
+  .ct-kv__row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+/* 带方向箭头的克制文字链接 */
+.ct-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--ct-font-size-base);
+  font-weight: 500;
+  color: var(--ct-text-primary);
+  transition: var(--ct-transition);
+}
+
+.ct-link svg {
+  transition: transform 200ms ease;
+}
+
+.ct-link:hover {
+  color: var(--ct-accent);
+}
+
+.ct-link:hover svg {
+  transform: translateX(2px);
+}
+
+.ct-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Element Plus 组件局部微调（保持克制中性色与 200ms 过渡） */
+.el-button {
+  font-weight: 500;
+  transition: var(--ct-transition);
+}
+
+.el-button:not(.el-button--primary):not(.el-button--success):not(.el-button--warning):not(.el-button--danger):not(.el-button--info):not(.is-link):not(.is-text) {
+  --el-button-text-color: var(--ct-text-primary);
+  --el-button-border-color: var(--ct-border);
+  --el-button-hover-text-color: var(--ct-text-primary);
+  --el-button-hover-bg-color: var(--ct-bg-subtle);
+  --el-button-hover-border-color: var(--ct-border-strong);
+  --el-button-active-text-color: var(--ct-text-primary);
+  --el-button-active-bg-color: #EDEDEF;
+  --el-button-active-border-color: var(--ct-border-strong);
+}
+
+.el-button--primary:not(.is-plain):not(.is-link):not(.is-text) {
+  --el-button-hover-bg-color: var(--ct-accent-hover);
+  --el-button-hover-border-color: var(--ct-accent-hover);
+  --el-button-active-bg-color: var(--ct-accent-active);
+  --el-button-active-border-color: var(--ct-accent-active);
+}
+
+.el-input__wrapper,
+.el-select__wrapper,
+.el-textarea__inner {
+  transition: var(--ct-transition);
+}
+
+.el-popper.is-light {
+  border-color: var(--ct-border);
+}
+
+.el-dropdown-menu__item {
+  gap: 8px;
+  border-radius: var(--ct-radius-sm);
+  margin: 0 4px;
+  color: var(--ct-text-body);
+  transition: var(--ct-transition);
+}
+
+.el-dropdown-menu__item:not(.is-disabled):hover,
+.el-dropdown-menu__item:not(.is-disabled):focus {
+  background-color: var(--ct-bg-subtle);
+  color: var(--ct-text-primary);
+}
+
+.el-table {
+  --el-table-header-bg-color: var(--ct-bg-canvas);
+  --el-table-header-text-color: var(--ct-text-tertiary);
+  --el-table-border-color: var(--ct-border);
+  --el-table-row-hover-bg-color: var(--ct-bg-canvas);
+}
+
+.el-table th.el-table__cell {
+  font-size: var(--ct-font-size-xs);
+  font-weight: 500;
+}
+
+.el-tabs__nav-wrap::after {
+  height: 1px;
+  background-color: var(--ct-border);
 }

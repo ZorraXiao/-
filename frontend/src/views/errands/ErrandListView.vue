@@ -1,19 +1,20 @@
 <script setup>
 import { ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { Plus } from '@element-plus/icons-vue'
+import { useRouter } from 'vue-router'
+import { ArrowRight, Plus } from 'lucide-vue-next'
 import AppPagination from '@/components/AppPagination.vue'
 import EmptyState from '@/components/EmptyState.vue'
+import PageHeader from '@/components/PageHeader.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import StatusTag from '@/components/StatusTag.vue'
 
-const route = useRoute()
 const router = useRouter()
 
 const keyword = ref('')
 const statusFilter = ref('')
 const page = ref(1)
 const pageSize = ref(20)
+const total = ref(0)
 
 function handleSearch() {
   page.value = 1
@@ -21,7 +22,20 @@ function handleSearch() {
 </script>
 
 <template>
-  <div class="hall-placeholder">
+  <div class="ct-page">
+    <PageHeader
+      eyebrow="跑腿服务"
+      title="任务大厅"
+      description="取快递、带饭、代送文件，看看有没有顺路就能帮上的忙。"
+    >
+      <template #actions>
+        <el-button type="primary" class="hall-btn" @click="router.push('/errands/create')">
+          <Plus :size="15" :stroke-width="1.5" />
+          <span>发布跑腿</span>
+        </el-button>
+      </template>
+    </PageHeader>
+
     <SearchBar
       v-model="keyword"
       placeholder="搜索起点、终点或物品说明..."
@@ -33,81 +47,50 @@ function handleSearch() {
           <el-option label="进行中" value="in_progress" />
         </el-select>
       </template>
-
-      <template #actions>
-        <el-button type="primary" @click="router.push('/errands/create')">
-          <el-icon><Plus /></el-icon>
-          <span>发布跑腿</span>
-        </el-button>
-      </template>
     </SearchBar>
 
-    <section class="placeholder-card">
-      <div class="placeholder-header">
-        <div>
-          <el-tag type="info" effect="light">跑腿服务 · 成员 6</el-tag>
-          <h1 class="placeholder-title">跑腿任务大厅</h1>
-          <p class="placeholder-meta">当前路径：<code>{{ route.fullPath }}</code></p>
-        </div>
-        <div class="placeholder-tags">
-          <StatusTag type="errand" status="pending" />
-          <StatusTag type="errand" status="in_progress" />
-          <StatusTag type="errand" status="pending_confirm" />
-          <StatusTag type="errand" status="completed" />
+    <section class="ct-panel">
+      <div class="ct-panel__header">
+        <span class="ct-panel__title">全部任务</span>
+        <div class="ct-legend">
+          <StatusTag type="errand" status="pending" size="small" />
+          <StatusTag type="errand" status="in_progress" size="small" />
+          <StatusTag type="errand" status="pending_confirm" size="small" />
+          <StatusTag type="errand" status="completed" size="small" />
         </div>
       </div>
 
-      <EmptyState description="当前为跑腿任务大厅骨架页，第三阶段将接入任务列表与并发接单">
-        <router-link to="/errands/301">
-          <el-button plain>查看示例任务详情 (#301)</el-button>
-        </router-link>
-      </EmptyState>
+      <div class="ct-panel__body">
+        <EmptyState description="当前没有待接单的跑腿任务">
+          <el-button type="primary" @click="router.push('/errands/create')">发布跑腿</el-button>
+          <router-link to="/errands/301" class="ct-link hall-example-link">
+            <span>查看示例任务详情</span>
+            <ArrowRight :size="14" :stroke-width="1.5" />
+          </router-link>
+        </EmptyState>
+      </div>
 
-      <AppPagination
-        v-model:page="page"
-        v-model:page-size="pageSize"
-        :total="25"
-      />
+      <div class="ct-panel__footer">
+        <AppPagination
+          v-model:page="page"
+          v-model:page-size="pageSize"
+          :total="total"
+        />
+      </div>
     </section>
   </div>
 </template>
 
 <style scoped>
-.hall-placeholder {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+:deep(.hall-btn > span) {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.placeholder-card {
-  padding: 24px;
-  background: var(--ct-bg-surface);
-  border: 1px solid var(--ct-border-color);
-  border-radius: var(--ct-radius-lg);
-  box-shadow: var(--ct-shadow-sm);
-}
-
-.placeholder-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.placeholder-title {
-  margin: 10px 0 4px;
-  font-size: var(--ct-font-size-2xl);
-}
-
-.placeholder-meta {
-  margin: 0;
-  color: var(--ct-text-regular);
-}
-
-.placeholder-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+.hall-example-link {
+  padding: 0 8px;
+  font-size: var(--ct-font-size-sm);
+  color: var(--ct-text-secondary);
 }
 </style>

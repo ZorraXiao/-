@@ -1,59 +1,54 @@
 <script setup>
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import EmptyState from '@/components/EmptyState.vue'
+import PageHeader from '@/components/PageHeader.vue'
 
-const route = useRoute()
 const activeTab = ref('products')
 </script>
 
 <template>
-  <section class="placeholder-card">
-    <el-tag type="primary" effect="light">个人中心 · 成员 6（需登录）</el-tag>
-    <h1 class="placeholder-title">我的发布</h1>
-    <p class="placeholder-meta">当前路径：<code>{{ route.fullPath }}</code></p>
+  <div class="ct-page profile-page">
+    <PageHeader
+      :back="{ to: '/profile', label: '个人中心' }"
+      title="我的发布"
+      description="集中管理你发布过的商品、失物与跑腿信息。"
+    />
 
-    <el-tabs v-model="activeTab" class="placeholder-tabs">
-      <el-tab-pane label="我的商品" name="products">
-        <p class="placeholder-meta">预留“我的商品”列表与下架操作区。</p>
-      </el-tab-pane>
-      <el-tab-pane label="我的失物" name="lost-found">
-        <p class="placeholder-meta">预留“我的失物”列表与完结操作区。</p>
-      </el-tab-pane>
-      <el-tab-pane label="我的跑腿" name="errands">
-        <p class="placeholder-meta">预留“我的跑腿”列表与确认完成操作区。</p>
-      </el-tab-pane>
-    </el-tabs>
+    <section class="ct-panel">
+      <div class="ct-panel__body">
+        <el-tabs v-model="activeTab">
+          <el-tab-pane label="我的商品" name="products">
+            <EmptyState description="你还没有发布过闲置商品">
+              <router-link to="/products/create">
+                <el-button type="primary">发布商品</el-button>
+              </router-link>
+            </EmptyState>
+          </el-tab-pane>
 
-    <div class="placeholder-links">
-      <router-link to="/profile"><el-button>返回个人中心</el-button></router-link>
-      <router-link to="/"><el-button plain>返回首页</el-button></router-link>
-    </div>
-  </section>
+          <el-tab-pane label="我的失物" name="lost-found">
+            <EmptyState description="你还没有发布失物或寻物信息">
+              <router-link to="/lost-found/create">
+                <el-button type="primary">发布信息</el-button>
+              </router-link>
+            </EmptyState>
+          </el-tab-pane>
+
+          <el-tab-pane label="我的跑腿" name="errands">
+            <EmptyState description="你还没有发布跑腿任务">
+              <router-link to="/errands/create">
+                <el-button type="primary">发布跑腿</el-button>
+              </router-link>
+            </EmptyState>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
+    </section>
+  </div>
 </template>
 
 <style scoped>
-.placeholder-card {
-  padding: 28px;
-  background: var(--ct-bg-surface);
-  border: 1px solid var(--ct-border-color);
-  border-radius: var(--ct-radius-lg);
-  box-shadow: var(--ct-shadow-sm);
-}
-.placeholder-title {
-  margin: 14px 0 8px;
-  font-size: var(--ct-font-size-2xl);
-}
-.placeholder-meta {
-  margin: 6px 0;
-  color: var(--ct-text-regular);
-}
-.placeholder-tabs {
-  margin-top: 16px;
-}
-.placeholder-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 20px;
+.profile-page {
+  max-width: 760px;
+  margin: 0 auto;
 }
 </style>
