@@ -1,0 +1,72 @@
+/* 校园交易平台默认主题变量（清爽校园蓝 / 浅灰主题），后续换肤统一修改本文件 */
+:root {
+  /* 品牌主色调 */
+  --ct-color-primary: #2563eb;
+  --ct-color-primary-hover: #3b82f6;
+  --ct-color-primary-active: #1d4ed8;
+  --ct-color-primary-light: #dbeafe;
+  --ct-color-primary-lighter: #eff6ff;
+
+  /* 语义状态色 */
+  --ct-color-success: #16a34a;
+  --ct-color-warning: #d97706;
+  --ct-color-danger: #dc2626;
+  --ct-color-info: #64748b;
+
+  /* 中性背景与文字色 */
+  --ct-bg-page: #f5f7fa;
+  --ct-bg-surface: #ffffff;
+  --ct-bg-subtle: #f8fafc;
+  --ct-text-primary: #1e293b;
+  --ct-text-regular: #475569;
+  --ct-text-secondary: #64748b;
+  --ct-text-placeholder: #94a3b8;
+  --ct-border-color: #e2e8f0;
+  --ct-border-color-light: #f1f5f9;
+
+  /* 字体与字号 */
+  --ct-font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --ct-font-size-xs: 12px;
+  --ct-font-size-sm: 13px;
+  --ct-font-size-base: 14px;
+  --ct-font-size-lg: 16px;
+  --ct-font-size-xl: 20px;
+  --ct-font-size-2xl: 24px;
+  --ct-line-height-base: 1.6;
+
+  /* 圆角规范 */
+  --ct-radius-sm: 6px;
+  --ct-radius-md: 10px;
+  --ct-radius-lg: 14px;
+  --ct-radius-round: 9999px;
+
+  /* 布局尺寸与阴影 */
+  --ct-page-max-width: 1200px;
+  --ct-page-padding-x: 24px;
+  --ct-header-height: 64px;
+  --ct-shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --ct-shadow-md: 0 6px 20px rgba(15, 23, 42, 0.08);
+
+  /* Element Plus 变量桥接（实现组件库同步换肤） */
+  --el-color-primary: var(--ct-color-primary);
+  --el-color-primary-light-3: #60a5fa;
+  --el-color-primary-light-5: #93c5fd;
+  --el-color-primary-light-7: #bfdbfe;
+  --el-color-primary-light-8: var(--ct-color-primary-light);
+  --el-color-primary-light-9: var(--ct-color-primary-lighter);
+  --el-color-primary-dark-2: var(--ct-color-primary-active);
+  --el-color-success: var(--ct-color-success);
+  --el-color-warning: var(--ct-color-warning);
+  --el-color-danger: var(--ct-color-danger);
+  --el-color-info: var(--ct-color-info);
+  --el-border-radius-base: var(--ct-radius-sm);
+  --el-border-radius-small: 4px;
+  --el-font-family: var(--ct-font-family);
+  --el-text-color-primary: var(--ct-text-primary);
+  --el-text-color-regular: var(--ct-text-regular);
+  --el-text-color-secondary: var(--ct-text-secondary);
+  --el-text-color-placeholder: var(--ct-text-placeholder);
+  --el-border-color: var(--ct-border-color);
+  --el-border-color-light: var(--ct-border-color-light);
+  --el-bg-color-page: var(--ct-bg-page);
+}
