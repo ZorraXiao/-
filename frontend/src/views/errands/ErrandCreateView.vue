@@ -2,10 +2,10 @@
 import PageHeader from '@/components/PageHeader.vue'
 
 const sections = [
-  { label: '任务内容', hint: '需要代取或代送的物品' },
-  { label: '取送地点', hint: '起点与终点' },
-  { label: '期望时间', hint: '最晚完成时间' },
-  { label: '酬劳', hint: '以元为单位填写，精确到分' },
+  { label: '任务内容', hint: '需要代取、代送的物品及交付要求' },
+  { label: '取送地点', hint: '取件起点与送达终点' },
+  { label: '跑腿酬劳', hint: '以元为单位填写，精确到分' },
+  { label: '联系方式', hint: '默认带入个人手机号，也可单独设置' },
 ]
 </script>
 

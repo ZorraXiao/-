@@ -3,9 +3,9 @@ import PageHeader from '@/components/PageHeader.vue'
 
 const sections = [
   { label: '信息类型', hint: '寻物启事或拾物招领' },
-  { label: '物品描述', hint: '名称、颜色与显著特征' },
-  { label: '时间地点', hint: '丢失或拾到的大致时间与位置' },
-  { label: '联系方式', hint: '便于失主或拾主联系' },
+  { label: '物品名称', hint: '丢失或拾获的物品名称' },
+  { label: '丢失 / 拾取地点', hint: '校内具体教学楼、食堂或路段' },
+  { label: '特征与联系方式', hint: '物品显著特征说明与联系方式快照' },
 ]
 </script>
 

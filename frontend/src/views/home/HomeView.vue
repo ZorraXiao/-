@@ -10,7 +10,7 @@ const previewRows = [
 
 const flowSteps = [
   { num: '01', title: '发布信息', desc: '描述清楚物品或需求' },
-  { num: '02', title: '站内沟通', desc: '确认细节与交付方式' },
+  { num: '02', title: '线下联系', desc: '核实细节与交付方式' },
   { num: '03', title: '校内交付', desc: '就近面交或送达' },
   { num: '04', title: '确认完结', desc: '双方确认，信息归档' },
 ]

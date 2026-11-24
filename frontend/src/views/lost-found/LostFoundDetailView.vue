@@ -1,6 +1,5 @@
 <script setup>
 import { useRoute } from 'vue-router'
-import { Image as ImageIcon } from 'lucide-vue-next'
 import PageHeader from '@/components/PageHeader.vue'
 import StatusTag from '@/components/StatusTag.vue'
 
@@ -21,31 +20,36 @@ const route = useRoute()
 
     <section class="ct-panel ct-panel--dashed">
       <div class="ct-panel__body">
-        <div class="detail-grid">
-          <div class="detail-media" aria-hidden="true">
-            <ImageIcon :size="24" :stroke-width="1.5" />
-            <span>物品图片</span>
+        <div class="ct-kv">
+          <div class="ct-kv__row">
+            <span class="ct-kv__label">信息类型</span>
+            <span class="ct-kv__value">--</span>
           </div>
-
-          <div class="ct-kv">
-            <div class="ct-kv__row">
-              <span class="ct-kv__label">类型</span>
-              <span class="ct-kv__value">--</span>
-            </div>
-            <div class="ct-kv__row">
-              <span class="ct-kv__label">状态</span>
-              <span class="ct-kv__value">
-                <StatusTag type="lost_found" status="searching" size="small" />
-              </span>
-            </div>
-            <div class="ct-kv__row">
-              <span class="ct-kv__label">地点</span>
-              <span class="ct-kv__value">--</span>
-            </div>
-            <div class="ct-kv__row">
-              <span class="ct-kv__label">时间</span>
-              <span class="ct-kv__value ct-num">--</span>
-            </div>
+          <div class="ct-kv__row">
+            <span class="ct-kv__label">物品名称</span>
+            <span class="ct-kv__value">--</span>
+          </div>
+          <div class="ct-kv__row">
+            <span class="ct-kv__label">状态</span>
+            <span class="ct-kv__value">
+              <StatusTag type="lost_found" status="searching" size="small" />
+            </span>
+          </div>
+          <div class="ct-kv__row">
+            <span class="ct-kv__label">丢失 / 拾取地点</span>
+            <span class="ct-kv__value">--</span>
+          </div>
+          <div class="ct-kv__row">
+            <span class="ct-kv__label">详细描述</span>
+            <span class="ct-kv__value">--</span>
+          </div>
+          <div class="ct-kv__row">
+            <span class="ct-kv__label">联系方式</span>
+            <span class="ct-kv__value">--</span>
+          </div>
+          <div class="ct-kv__row">
+            <span class="ct-kv__label">发布时间</span>
+            <span class="ct-kv__value ct-num">--</span>
           </div>
         </div>
       </div>
@@ -68,36 +72,9 @@ const route = useRoute()
   margin: 0 auto;
 }
 
-.detail-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
-  align-items: start;
-}
-
-.detail-media {
-  aspect-ratio: 4 / 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background-color: var(--ct-bg-surface);
-  border: 1px dashed var(--ct-border-dashed);
-  border-radius: var(--ct-radius-md);
-  color: var(--ct-text-tertiary);
-  font-size: var(--ct-font-size-sm);
-}
-
 .detail-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-}
-
-@media (max-width: 768px) {
-  .detail-grid {
-    grid-template-columns: 1fr;
-  }
 }
 </style>

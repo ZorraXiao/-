@@ -1,9 +1,12 @@
 <script setup>
 import { computed } from 'vue'
-import { ChevronRight, ClipboardList, FileText, PenLine } from 'lucide-vue-next'
+import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
+import { ChevronRight, ClipboardList, FileText, LogOut, PenLine } from 'lucide-vue-next'
 import PageHeader from '@/components/PageHeader.vue'
 import { useAuthStore } from '@/stores/auth'
 
+const router = useRouter()
 const authStore = useAuthStore()
 
 const displayName = computed(
@@ -11,6 +14,8 @@ const displayName = computed(
 )
 
 const username = computed(() => authStore.userInfo?.username || '--')
+
+const phone = computed(() => authStore.userInfo?.phone || '未设置')
 
 const initial = computed(() => displayName.value.slice(0, 1).toUpperCase())
 
@@ -28,6 +33,12 @@ const entries = [
     icon: ClipboardList,
   },
 ]
+
+function handleLogout() {
+  authStore.clearAuth()
+  ElMessage.success('已退出登录')
+  router.push('/login')
+}
 </script>
 
 <template>
@@ -60,6 +71,15 @@ const entries = [
           <span>编辑资料</span>
         </el-button>
       </div>
+
+      <div class="ct-panel__footer profile-details">
+        <div class="ct-kv">
+          <div class="ct-kv__row">
+            <span class="ct-kv__label">手机号</span>
+            <span class="ct-kv__value ct-num">{{ phone }}</span>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="ct-panel profile-nav-panel">
@@ -81,6 +101,13 @@ const entries = [
         <ChevronRight :size="16" :stroke-width="1.5" class="profile-nav-row__arrow" />
       </router-link>
     </section>
+
+    <div class="profile-logout">
+      <el-button class="profile-logout-btn" @click="handleLogout">
+        <LogOut :size="14" :stroke-width="1.5" />
+        <span>退出登录</span>
+      </el-button>
+    </div>
   </div>
 </template>
 
@@ -123,10 +150,16 @@ const entries = [
   color: var(--ct-text-tertiary);
 }
 
-:deep(.profile-edit-btn > span) {
+:deep(.profile-edit-btn > span),
+:deep(.profile-logout-btn > span) {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+}
+
+.profile-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 .profile-nav-panel {
@@ -189,5 +222,15 @@ const entries = [
 .profile-nav-row:hover .profile-nav-row__arrow {
   color: var(--ct-text-primary);
   transform: translateX(2px);
+}
+
+.profile-logout {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.profile-logout-btn:hover {
+  color: var(--ct-danger);
+  border-color: var(--ct-danger);
 }
 </style>

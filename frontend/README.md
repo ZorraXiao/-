@@ -48,7 +48,7 @@ npm run preview
 
 ```text
 frontend/src/
-├── main.js                   # 入口：挂载 Pinia、Router、Element Plus（zh-cn）与全量图标，接入 401 跳转钩子
+├── main.js                   # 入口：挂载 Pinia、Router、Element Plus（zh-cn），接入 401 跳转钩子
 ├── App.vue                   # 根路由出口 <router-view />
 ├── styles/
 │   ├── variables.css         # 全局 CSS 变量（Zinc 中性色 + 深靛蓝强调色，覆写 Element Plus 变量）

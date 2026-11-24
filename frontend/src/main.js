@@ -1,7 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import ElementPlus from 'element-plus'
-import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import 'element-plus/dist/index.css'
 import '@/styles/variables.css'
@@ -18,10 +17,6 @@ const pinia = createPinia()
 app.use(pinia)
 app.use(router)
 app.use(ElementPlus, { locale: zhCn })
-
-for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-  app.component(key, component)
-}
 
 // 接通 Axios 401 钩子：清理登录态并跳转至登录页（已在登录页时避免重复跳转）
 setUnauthorizedHandler(() => {

@@ -41,26 +41,26 @@ const route = useRoute()
 
           <div class="ct-kv">
             <div class="ct-kv__row">
-              <span class="ct-kv__label">起点</span>
-              <span class="ct-kv__value">--</span>
-            </div>
-            <div class="ct-kv__row">
-              <span class="ct-kv__label">终点</span>
-              <span class="ct-kv__value">--</span>
-            </div>
-            <div class="ct-kv__row">
-              <span class="ct-kv__label">酬劳</span>
+              <span class="ct-kv__label">跑腿酬劳</span>
               <span class="ct-kv__value ct-mono">¥ --.--</span>
             </div>
             <div class="ct-kv__row">
-              <span class="ct-kv__label">截止时间</span>
-              <span class="ct-kv__value ct-num">--</span>
+              <span class="ct-kv__label">物品说明</span>
+              <span class="ct-kv__value">--</span>
+            </div>
+            <div class="ct-kv__row">
+              <span class="ct-kv__label">联系方式</span>
+              <span class="ct-kv__value">--</span>
             </div>
             <div class="ct-kv__row">
               <span class="ct-kv__label">状态</span>
               <span class="ct-kv__value">
                 <StatusTag type="errand" status="pending" size="small" />
               </span>
+            </div>
+            <div class="ct-kv__row">
+              <span class="ct-kv__label">发布时间</span>
+              <span class="ct-kv__value ct-num">--</span>
             </div>
           </div>
         </div>

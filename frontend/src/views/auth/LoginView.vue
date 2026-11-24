@@ -27,6 +27,7 @@ const loginForm = reactive({
 const registerForm = reactive({
   username: '',
   nickname: '',
+  phone: '',
   password: '',
   confirmPassword: '',
 })
@@ -47,6 +48,14 @@ const registerRules = {
   nickname: [
     { required: true, message: '请输入昵称', trigger: 'blur' },
     { max: 20, message: '昵称不超过 20 个字符', trigger: 'blur' },
+  ],
+  phone: [
+    { required: true, message: '请输入手机号', trigger: 'blur' },
+    {
+      pattern: /^1[3-9]\d{9}$/,
+      message: '请输入有效的 11 位手机号',
+      trigger: 'blur',
+    },
   ],
   password: loginRules.password,
   confirmPassword: [
@@ -189,6 +198,15 @@ async function handleSubmit() {
             <el-input
               v-model="registerForm.nickname"
               placeholder="显示给同校师生的昵称"
+              maxlength="20"
+            />
+          </el-form-item>
+
+          <el-form-item label="手机号" prop="phone">
+            <el-input
+              v-model="registerForm.phone"
+              placeholder="用于线下交易或失物核实联系"
+              autocomplete="tel"
               maxlength="20"
             />
           </el-form-item>
