@@ -1,0 +1,25 @@
+# ============================================================================
+# 校园交易平台 —— 本机安装 MySQL 8.0 参考配置
+# 适用对象：未使用 Docker、在本机直接安装 MySQL 8.0 的开发成员
+# 说明：
+#   - Windows 请将以下配置合并到 my.ini（通常位于 C:\ProgramData\MySQL\MySQL Server 8.0\my.ini）
+#   - Linux/macOS 请合并到 /etc/my.cnf 或 /etc/mysql/mysql.conf.d/mysqld.cnf
+#   - 修改后需重启 MySQL 服务生效
+# ============================================================================
+
+[mysqld]
+# 强制服务端使用 UTC 时区，保证 DATETIME(3) 与 CURRENT_TIMESTAMP(3) 始终按 UTC 落库
+default-time-zone = '+00:00'
+
+# 统一使用 utf8mb4 字符集与 MySQL 8.0 默认排序规则
+character-set-server = utf8mb4
+collation-server = utf8mb4_0900_ai_ci
+
+# 启用严格 SQL 模式，禁止非法日期与静默截断
+sql_mode = ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+
+# 连接数上限（满足并发测试需求）
+max_connections = 200
+
+[client]
+default-character-set = utf8mb4
