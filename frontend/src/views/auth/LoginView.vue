@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { ArrowLeft } from 'lucide-vue-next'
 import EditorialIllustration from '@/components/EditorialIllustration.vue'
+import DemoAccess from '@/features/profile-admin/DemoAccess.vue'
 
 const route = useRoute()
 
@@ -148,6 +149,8 @@ async function handleSubmit() {
           <p v-if="route.query.redirect" class="auth-redirect-hint">
             登录后将返回你刚才访问的页面
           </p>
+
+          <DemoAccess />
 
           <el-form
             v-if="isLogin"

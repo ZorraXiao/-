@@ -63,7 +63,7 @@ export const routes = [
         meta: { title: '信息详情' },
       },
 
-      // 跑腿服务（成员 6）—— /create 必须定义在 /:id 之前
+      // 跑腿服务—— /create 必须定义在 /:id 之前
       {
         path: 'errands',
         name: 'ErrandList',
@@ -83,7 +83,13 @@ export const routes = [
         meta: { title: '任务详情' },
       },
 
-      // 个人中心（成员 6，均需登录）
+      // 个人中心（均需登录）
+      {
+        path: 'profile/content/:kind(products|lost-found|errands)/:id',
+        name: 'ProfileContentDetail',
+        component: () => import('@/features/profile-admin/ContentDetailView.vue'),
+        meta: { title: '记录详情', requiresAuth: true },
+      },
       {
         path: 'profile',
         name: 'Profile',
@@ -105,7 +111,7 @@ export const routes = [
     ],
   },
 
-  // 后台管理布局（AdminLayout，成员 6，均需管理员权限）
+  // 后台管理布局（AdminLayout，均需管理员权限）
   {
     path: '/admin',
     name: 'Admin',
@@ -113,6 +119,12 @@ export const routes = [
     redirect: '/admin/users',
     meta: { title: '后台管理', requiresAuth: true, requiresAdmin: true },
     children: [
+      {
+        path: 'content/:kind(products|lost-found|errands)/:id',
+        name: 'AdminContentDetail',
+        component: () => import('@/features/profile-admin/ContentDetailView.vue'),
+        meta: { title: '内容详情', adminContentDetail: true },
+      },
       {
         path: 'users',
         name: 'AdminUsers',

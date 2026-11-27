@@ -1,54 +1,29 @@
 <script setup>
-import { ref } from 'vue'
-import EmptyState from '@/components/EmptyState.vue'
+import { ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import PageHeader from '@/components/PageHeader.vue'
+import PersonalContentList from '@/features/profile-admin/PersonalContentList.vue'
+import DemoNotice from '@/features/profile-admin/DemoNotice.vue'
 
+const route = useRoute(), router = useRouter()
+const tabs = { products: '我的商品', 'lost-found': '我的失物', errands: '我的跑腿' }
 const activeTab = ref('products')
+watch(() => route.query.tab, tab => { activeTab.value = Object.hasOwn(tabs, tab) ? tab : 'products' }, { immediate: true })
+function changeTab(tab) { router.replace({ query: { ...route.query, tab } }) }
 </script>
 
 <template>
-  <div class="ct-page profile-page">
+  <div class="ct-page pa-personal-page">
     <PageHeader
       :back="{ to: '/profile', label: '个人中心' }"
       title="我的发布"
       description="集中管理你发布过的商品、失物与跑腿信息。"
     />
 
-    <section class="ct-panel">
-      <div class="ct-panel__body">
-        <el-tabs v-model="activeTab">
-          <el-tab-pane label="我的商品" name="products">
-            <EmptyState description="你还没有发布过闲置商品">
-              <router-link to="/products/create">
-                <el-button type="primary">发布商品</el-button>
-              </router-link>
-            </EmptyState>
-          </el-tab-pane>
-
-          <el-tab-pane label="我的失物" name="lost-found">
-            <EmptyState description="你还没有发布失物或寻物信息">
-              <router-link to="/lost-found/create">
-                <el-button type="primary">发布信息</el-button>
-              </router-link>
-            </EmptyState>
-          </el-tab-pane>
-
-          <el-tab-pane label="我的跑腿" name="errands">
-            <EmptyState description="你还没有发布跑腿任务">
-              <router-link to="/errands/create">
-                <el-button type="primary">发布跑腿</el-button>
-              </router-link>
-            </EmptyState>
-          </el-tab-pane>
-        </el-tabs>
-      </div>
-    </section>
+    <DemoNotice />
+    <el-tabs v-model="activeTab" class="pa-tabs" @tab-change="changeTab">
+      <el-tab-pane v-for="(label, key) in tabs" :key="key" :name="key" :label="label" />
+    </el-tabs>
+    <PersonalContentList :key="activeTab" :kind="activeTab" />
   </div>
 </template>
-
-<style scoped>
-.profile-page {
-  max-width: 760px;
-  margin: 0 auto;
-}
-</style>

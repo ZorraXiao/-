@@ -41,7 +41,8 @@ const adminName = computed(
 const adminInitial = computed(() => adminName.value.slice(0, 1).toUpperCase())
 
 function isActive(path) {
-  return route.path === path || route.path.startsWith(`${path}/`)
+  const current = route.meta.adminContentDetail ? `/admin/${route.params.kind}` : route.path
+  return current === path || current.startsWith(`${path}/`)
 }
 
 function handleLogout() {
@@ -371,5 +372,11 @@ function handleLogout() {
     padding-left: 20px;
     padding-right: 20px;
   }
+}
+@media (max-width: 600px) {
+  .ct-admin-header__root,
+  .ct-admin-header__sep { display: none; }
+  .ct-admin-header__current { white-space: nowrap; }
+  .ct-admin-header { gap: 8px; }
 }
 </style>

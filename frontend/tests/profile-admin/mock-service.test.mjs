@@ -1,0 +1,125 @@
+import test from 'node:test'
+import assert from 'node:assert/strict'
+import { createMockService, DATABASE_KEY } from '../../src/features/profile-admin/mock-service.js'
+import { availableAction } from '../../src/features/profile-admin/model.js'
+
+function fixture() {
+  const values = new Map()
+  const storage = { getItem: key => values.get(key), setItem: (key, value) => values.set(key, value) }
+  let actor = '2'
+  const api = createMockService({ storage, getActorId: () => actor, now: () => '2026-11-27T10:00:00Z' })
+  return { api, storage, as: id => { actor = id }, database: () => JSON.parse(values.get(DATABASE_KEY)) }
+}
+const status = expected => error => error.status === expected
+
+test('personal lists isolate owners and paginate after filtering', () => {
+  const { api } = fixture()
+  const first = api.listMine('products', { page: 1, page_size: 10 })
+  const second = api.listMine('products', { page: 2, page_size: 10 })
+  assert.equal(first.total, 14)
+  assert.equal(first.items.length, 10)
+  assert.equal(second.items.length, 4)
+  assert.ok([...first.items, ...second.items].every(row => row.seller_id === '2'))
+  assert.equal(new Set([...first.items, ...second.items].map(row => row.id)).size, 14)
+  assert.equal(api.listMine('products', { keyword: '软件工程' }).total, 1)
+  assert.equal(api.listMine('errands', { participation: 'accepted' }).total, 3)
+})
+test('foreign records cannot be read or changed by guessing an id', () => {
+  const { api } = fixture()
+  assert.throws(() => api.detail('products', '102'), status(403))
+  assert.throws(() => api.act('products', '102', 'off-shelf'), status(403))
+  assert.throws(() => api.act('errands', '306', 'deliver'), status(403))
+})
+test('delivery and completion require different participants and reject duplicates', () => {
+  const { api, as } = fixture()
+  assert.equal(api.act('errands', '302', 'deliver').status, 'pending_confirm')
+  assert.throws(() => api.act('errands', '302', 'deliver'), status(409))
+  assert.throws(() => api.act('errands', '302', 'complete'), status(403))
+  as('3')
+  const completed = api.act('errands', '302', 'complete')
+  assert.equal(completed.status, 'completed')
+  assert.equal(completed.completed_at, '2026-11-27T10:00:00Z')
+  assert.equal(completed.contact_info, null)
+  as('2')
+  assert.ok(api.listMine('errands', { participation: 'accepted' }).items.some(row => row.id === '302'))
+})
+test('completed/off-shelf/resolved records never expose a contact snapshot', () => {
+  const { api } = fixture()
+  assert.equal(api.act('products', '101', 'off-shelf').contact_info, null)
+  assert.equal(api.act('lost-found', '201', 'resolve').contact_info, null)
+  assert.equal(api.detail('products', '103').contact_info, null)
+  assert.equal(api.detail('lost-found', '206').contact_info, null)
+  assert.equal(api.detail('errands', '307').contact_info, null)
+})
+test('role checks and persisted bans apply to already existing sessions', () => {
+  const { api, as, database } = fixture()
+  assert.throws(() => api.listUsers(), status(403))
+  assert.throws(() => api.moderate('products', '102', 'delete', { reason: '违规' }), status(403))
+  as('1')
+  api.setBan('2', true, { reason: '核实违规内容' })
+  assert.throws(() => api.setBan('1', true, { reason: '测试' }), status(403))
+  as('2')
+  assert.throws(() => api.me(), status(403))
+  assert.throws(() => api.act('lost-found', '201', 'resolve'), status(403))
+  as('1'); api.setBan('2', false)
+  as('2'); assert.equal(api.me().is_active, true)
+  assert.deepEqual(database().audit_logs.map(row => row.action), ['ban_user', 'unban_user'])
+})
+test('restoring moderation preserves seller and task business states', () => {
+  const { api, as } = fixture()
+  as('1')
+  api.moderate('products', '103', 'take-down', { reason: '核查商品信息' })
+  const restored = api.moderate('products', '103', 'restore')
+  assert.equal(restored.status, 'off_shelf')
+  assert.equal(restored.moderation_status, 'normal')
+  assert.equal(restored.contact_info, null)
+  assert.equal(restored.taken_down_reason, null)
+})
+test('soft deletion hides content and saves audit information across reloads', () => {
+  const { api, as, database, storage } = fixture()
+  as('1')
+  api.moderate('products', '101', 'delete', { reason: '重复发布' })
+  const deleted = database().products.find(row => row.id === '101')
+  assert.equal(deleted.is_deleted, true)
+  assert.equal(deleted.deleted_by, '1')
+  assert.equal(database().audit_logs[0].action, 'soft_delete')
+  assert.equal(database().audit_logs[0].reason, '重复发布')
+  assert.ok(!api.listAdmin('products').items.some(row => row.id === '101'))
+  const reloaded = createMockService({ storage, getActorId: () => '2' })
+  assert.throws(() => reloaded.detail('products', '101'), status(404))
+  assert.ok(!reloaded.listMine('products').items.some(row => row.id === '101'))
+})
+test('profile updates preserve ownership and enforce phone uniqueness', () => {
+  const { api } = fixture()
+  assert.throws(() => api.updateMe({ role: 'admin' }), status(422))
+  assert.throws(() => api.updateMe({ nickname: null }), status(422))
+  assert.throws(() => api.updateMe({ nickname: '   ' }), status(422))
+  assert.throws(() => api.updateMe({ phone: '13800000003' }), status(409))
+  assert.equal(api.updateMe({ nickname: '  林同学的新昵称 ' }).nickname, '林同学的新昵称')
+  assert.equal(api.me().role, 'user')
+})
+test('mutations recheck the latest moderation state rather than stale list data', () => {
+  const { api, as } = fixture()
+  const stale = api.detail('products', '101')
+  assert.ok(availableAction('products', stale, '2'))
+  as('1'); api.moderate('products', '101', 'take-down', { reason: '核查' })
+  as('2'); assert.throws(() => api.act('products', stale.id, 'off-shelf'), status(409))
+  assert.equal(availableAction('products', api.detail('products', '101'), '2'), null)
+})
+test('invalid filters, paging and missing reasons are rejected', () => {
+  const { api, as } = fixture()
+  assert.throws(() => api.listMine('products', { page: 0 }), status(422))
+  assert.throws(() => api.listMine('products', { page_size: 101 }), status(422))
+  assert.throws(() => api.listMine('products', { status: 'completed' }), status(422))
+  assert.throws(() => api.listMine('errands', { participation: 'all-users' }), status(422))
+  as('1')
+  assert.throws(() => api.listUsers({ is_active: 'maybe' }), status(422))
+  assert.throws(() => api.setBan('2', true, { reason: ' ' }), status(422))
+  assert.throws(() => api.moderate('products', '101', 'delete'), status(422))
+})
+test('failed persistence does not claim a successful mutation or retain partial audit data', () => {
+  const storage = { getItem: () => null, setItem: () => { throw new Error('quota exceeded') } }
+  const api = createMockService({ storage, getActorId: () => '1' })
+  assert.throws(() => api.moderate('products', '101', 'delete', { reason: '测试' }), /quota exceeded/)
+  assert.ok(api.listAdmin('products').items.some(row => row.id === '101'))
+})
