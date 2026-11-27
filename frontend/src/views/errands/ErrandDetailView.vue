@@ -1,6 +1,7 @@
 <script setup>
 import { useRoute } from 'vue-router'
 import { MapPin } from 'lucide-vue-next'
+import EditorialIllustration from '@/components/EditorialIllustration.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import StatusTag from '@/components/StatusTag.vue'
 
@@ -25,7 +26,10 @@ const route = useRoute()
           <div class="detail-route">
             <div class="detail-route__head">
               <MapPin :size="15" :stroke-width="1.5" />
-              <span>起点 → 终点</span>
+              <span class="detail-route__kicker">起点 → 终点</span>
+            </div>
+            <div class="detail-route__art" aria-hidden="true">
+              <EditorialIllustration scene="errands" :size="156" />
             </div>
             <div class="ct-kv">
               <div class="ct-kv__row">
@@ -93,7 +97,7 @@ const route = useRoute()
 
 .detail-route {
   padding: 20px;
-  background-color: var(--ct-bg-surface);
+  background-color: var(--ct-bg-canvas);
   border: 1px dashed var(--ct-border-dashed);
   border-radius: var(--ct-radius-md);
 }
@@ -103,9 +107,21 @@ const route = useRoute()
   align-items: center;
   gap: 6px;
   margin-bottom: 8px;
+  color: var(--ct-accent);
+}
+
+.detail-route__kicker {
   font-size: var(--ct-font-size-sm);
   font-weight: 500;
-  color: var(--ct-text-tertiary);
+  color: var(--ct-text-secondary);
+}
+
+.detail-route__art {
+  display: flex;
+  justify-content: center;
+  padding: 6px 0 10px;
+  margin-bottom: 6px;
+  border-bottom: 1px dashed var(--ct-border);
 }
 
 .detail-actions {
